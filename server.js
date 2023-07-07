@@ -21,7 +21,7 @@ const dbOptions = {
 
     
 
-http://localhost:9000/
+http:///localhost:9000/
 //middelwares--------------------------------------------
 app.use(myconn(mysql,dbOptions,'single'));
 app.use(express.json());
