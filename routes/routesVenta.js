@@ -40,7 +40,7 @@ routesVenta.get("/Productos/:year/:month", (req, res) => {
     if (err) return res.send(err);
 
     conn.query(
-      `SELECT * FROM Venta WHERE YEAR(Venta.Fecha_entrega)=${req.params.year} AND MONTH(Venta.Fecha_entrega)=${req.params.month}`,
+      `SELECT id_Venta,id_Cliente,Venta.id_Producto,Cantidad_Vendida,Total_Vendido,Fecha_entrega, Producto.Nombre FROM Venta join Producto WHERE YEAR(Venta.Fecha_entrega)=${req.params.year} AND MONTH(Venta.Fecha_entrega)=${req.params.month} and Venta.id_Producto = Producto.id_Producto;`,
       (err, rows) => {
         if (err) return res.send(err);
 
