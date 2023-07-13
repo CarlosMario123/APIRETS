@@ -23,8 +23,7 @@ routesVenta.get("/:month/:year", (req, res) => {
       JOIN Producto ON Venta.id_Producto = Producto.id_Producto
       WHERE YEAR(Venta.Fecha_entrega) = ${req.params.year} AND MONTH(Venta.Fecha_entrega) = ${req.params.month}
       GROUP BY Venta.id_Producto, Producto.Nombre
-      ORDER BY Total_Vendido DESC
-      LIMIT 1;`,
+      ORDER BY Total_Vendido asc limit 1;`,
       (err, rows) => {
         if (err) return res.send(err);
 
