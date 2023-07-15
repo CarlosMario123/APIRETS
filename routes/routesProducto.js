@@ -30,12 +30,48 @@ routesProducto.get("/:nombre", (req, res) => {
 routesProducto.post("/", (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
-    conn.query("INSERT INTO Producto set ?", [req.body], (err, rows) => {
-      if (err) return res.send(err);
-      res.json(rows);
-    });
+
+    const productoData = req.body;
+    const idProducto = productoData.id_Producto;
+    const cantidadIntroducida = productoData.Cantidad_Disponible;
+
+    conn.query(
+      "SELECT id_Producto, Cantidad_Disponible FROM Producto WHERE id_Producto = ?",
+      [idProducto],
+      (err, result) => {
+        if (err) return res.send(err);
+
+        if (result.length === 0) {
+          // El producto no existe en la tabla Producto, se realiza la inserción
+          conn.query(
+            "INSERT INTO Producto SET ?",
+            [productoData],
+            (err, result) => {
+              if (err) return res.send(err);
+
+              res.json(result);
+            }
+          );
+        } else {
+          // El producto existe, se realiza la actualización de la cantidad disponible
+          const cantidadActual = result[0].Cantidad_Disponible;
+          const nuevaCantidad = cantidadActual + cantidadIntroducida;
+
+          conn.query(
+            "UPDATE Producto SET Cantidad_Disponible = ? WHERE id_Producto = ?",
+            [nuevaCantidad, idProducto],
+            (err, result) => {
+              if (err) return res.send(err);
+
+              res.json(result);
+            }
+          );
+        }
+      }
+    );
   });
 });
+
 
 routesProducto.delete("/:id", (req, res) => {
   req.getConnection((err, conn) => {
