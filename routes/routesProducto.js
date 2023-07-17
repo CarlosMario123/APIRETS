@@ -17,7 +17,7 @@ routesProducto.get("/:nombre", (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
     conn.query(
-      "SELECT Nombre_Producto,Producto_Precio,Cantidad_Disponible FROM Producto WHERE Nombre_Producto = ?",
+      "SELECT Nombre,Cantidad_Disponible FROM Producto WHERE Nombre = ?",
       [req.params.nombre],
       (err, rows) => {
         if (err) return res.send(err);
@@ -77,7 +77,7 @@ routesProducto.delete("/:id", (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
     conn.query(
-      "DELETE FROM Ṕroducto WHERE id_Producto = ?",
+      "DELETE FROM Producto WHERE id_Producto = ?",
       [req.params.id],
       (err, rows) => {
         if (err) return res.send(err);
