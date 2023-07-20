@@ -30,7 +30,6 @@ routesVenta.get("/:month/:year", (req, res) => {
         res.json(rows);
       }
     );
-    2;
   });
 });
 
@@ -55,6 +54,7 @@ routesVenta.post("/", (req, res) => {
 
     const ventaData = req.body; // Datos de la venta proporcionados en el cuerpo de la solicitud
     const idProducto = ventaData.id_Producto; // ID_Producto vendido
+    let Cantidad_Disponible = ventaData.Cantidad_Disponible; // Can disponible de la tabla venta
 
     // Verificar si el producto existe en la tabla Producto
     conn.query(
@@ -78,6 +78,26 @@ routesVenta.post("/", (req, res) => {
             [ventaData.Cantidad_Vendida, idProducto],
             (err, result) => {
               if (err) return res.send(err);
+
+              conn.query(
+                "SELECT Cantidad_Disponible FROM Producto",
+                (err, rows) => {
+                  if (err) return res.send(err);
+
+                  if ((Cantidad_Disponible = 0)) {
+                    conn.query(
+                      "DELETE FROM Producto WHERE Cantidad_Disponible = 0",
+                      (err, rows) => {
+                        if (err) return res.send(err);
+
+                        res.json(rows);
+                      }
+                    );
+                  }
+
+                  res.json(rows);
+                }
+              );
 
               res.json(result);
             }
