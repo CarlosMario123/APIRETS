@@ -65,10 +65,7 @@ routesProducto.post("/", (req, res) => {
 
               res.json(result);
             }
-            
           );
-
-
         }
       }
     );

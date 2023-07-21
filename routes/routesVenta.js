@@ -88,6 +88,7 @@ routesVenta.post("/", (req, res) => {
                     conn.query(
                       "DELETE FROM Producto WHERE Cantidad_Disponible = 0",
                       (err, rows) => {
+                        
                         if (err) return res.send(err);
 
                         res.json(rows);
