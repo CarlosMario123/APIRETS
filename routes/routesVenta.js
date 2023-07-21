@@ -58,7 +58,7 @@ routesVenta.post("/", (req, res) => {
 
     // Verificar si el producto existe en la tabla Producto
     conn.query(
-      "SELECT id_Producto FROM Producto WHERE id_Producto = ?",
+      "SELECT Nombre FROM Producto WHERE Nombre = ?",
       [idProducto],
       (err, result) => {
         if (err) return res.send(err);
@@ -74,7 +74,7 @@ routesVenta.post("/", (req, res) => {
 
           // Actualizar la cantidad disponible en la tabla Producto
           conn.query(
-            "UPDATE Producto SET Cantidad_Disponible = Cantidad_Disponible - ? WHERE id_Producto = ?",
+            "UPDATE Producto SET Cantidad_Disponible = Cantidad_Disponible - ? WHERE Nombre = ?",
             [ventaData.Cantidad_Vendida, idProducto],
             (err, result) => {
               if (err) return res.send(err);
